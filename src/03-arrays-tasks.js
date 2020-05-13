@@ -262,7 +262,7 @@ function getMovingSum(arr) {
  * [ "a" ] => []
  */
 function getSecondItems(arr) {
-  return arr.filter((i) => arr.indexOf(i) % 2 === 0);
+  return arr.filter((i) => arr.indexOf(i) % 2 !== 0);
 }
 
 
@@ -280,8 +280,16 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-
+function propagateItemsByPositionIndex(arr) {
+  const mas = [];
+  for (let i = 0; i < arr.length; i += 1) {
+    let j = i;
+    while (j >= 0) {
+      mas.push(arr[i]);
+      j -= 1;
+    }
+  }
+  return mas;
 }
 
 
@@ -298,8 +306,12 @@ function propagateItemsByPositionIndex(/* arr */) {
  *   [ 1,2,3,4,5,6,7,8,9,10 ] => [ 10, 9, 8 ]
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
-function get3TopItems(/* arr */) {
-  throw new Error('Not implemented');
+function get3TopItems(arr) {
+  if (arr.length > 3) {
+    // eslint-disable-next-line no-param-reassign
+    arr = arr.filter((i, index, array) => index > (array.length - 4));
+  }
+  return arr.reverse();
 }
 
 
@@ -346,7 +358,20 @@ function sortDigitNamesByNumericOrder(arr) {
     eight: 8,
     nine: 9,
   };
-  return dig + arr;
+  let mas = [];
+  for (let i = 0; i < arr.length; i += 1) {
+    mas.push(dig[arr[i]]);
+  }
+  mas = mas.sort((a, b) => a - b);
+  for (let i = 0; i < mas.length; i += 1) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key in dig) {
+      if (dig[key] === mas[i]) {
+        mas[i] = key;
+      }
+    }
+  }
+  return mas;
 }
 
 /**
@@ -362,7 +387,7 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-  return arr.reduce((acc = 0, i) => acc + i);
+  return arr.reduce((sum, current) => sum + current, 0);
 }
 
 /**
@@ -378,7 +403,12 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-  return arr.filter((i) => i === false).length;
+  return arr.reduce((sum, i) => {
+    if (!i) {
+      return sum + 1;
+    }
+    return sum;
+  }, 0);
 }
 
 /**
