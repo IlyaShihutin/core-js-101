@@ -36,7 +36,7 @@ function getRectangleArea(width, height) {
  *   0    => 0
  */
 function getCicleCircumference(radius) {
-  return radius * 2 * 3.1415926535;
+  return 2 * Math.PI * radius;
 }
 
 /**
@@ -109,9 +109,8 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  // return Math.abs(x1 * x2 + y1 * y2) del
-  // ((Math.sqrt(x1 ** 2 + y1 ** 2) * Math.sqrt(x2 ** 2 + y2 ** 2)));
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  return Math.abs(Math.atan2(y2, x2) - Math.atan2(y1, x1));
 }
 
 /**
@@ -181,7 +180,12 @@ function getParallelipidedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  return num.toFixed(pow);
+  let arr = 0;
+  // eslint-disable-next-line no-restricted-properties
+  const mippo = Math.pow(10, pow);
+  arr = num / mippo;
+  arr = Math.round(arr);
+  return arr * mippo;
 }
 
 /**
@@ -202,7 +206,11 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  return !(n % 2 === 0);
+  if (n <= 0 || n === 1) return false;
+  for (let i = 2; i <= Math.sqrt(n); i += 1) {
+    if (n % i === 0) return false;
+  }
+  return true;
 }
 
 /**
@@ -221,7 +229,10 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  return typeof (+value) === 'number' ? +value : def;
+  if (+value) {
+    return value;
+  }
+  return def;
 }
 
 module.exports = {
